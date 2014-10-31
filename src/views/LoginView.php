@@ -16,7 +16,7 @@ class LoginView extends View {
 	public function post() {
 		if (isset($_POST['email'])
 			&& isset($_POST['password'])) {
-			include_once('models/DatabaseManager.php');	
+			include('models/DatabaseManager.php');
 			include_once('models/User.php');
 			$u = new User();
 			$u->email = $_POST['email'];

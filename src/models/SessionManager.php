@@ -5,7 +5,7 @@
 class SessionManager {
 	public static function getCurrentUser () {
 		if (SessionManager::isLoggedin()) {
-			include_once('models/DatabaseManager.php');
+			include('models/DatabaseManager.php');
 			include_once('models/User.php');
 			$u = new User();
 			$u->id = $_SESSION['id'];

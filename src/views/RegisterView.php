@@ -27,6 +27,7 @@ class RegisterView extends View {
 			$u->email = $_POST['email'];
 			$u->type = $_POST['type'];
 			$u->hashed_pass = md5($_POST['password']);
+			if ($u->type == 2) $u->approved = false;
 			$u->insert($db);
 			SessionManager::setLoggedin($u->id);
 			header('Location: /');

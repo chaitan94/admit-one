@@ -9,7 +9,13 @@ Staff Home page!
 Welcome, {{data.user_name}}
 <br>
 <a href="/logout"><input type="button" value="Logout!"></a>
-<br><button>Allot coupons to a user</button>
-<br><button>Redeem coupons from a user</button>
+<br>
+<br>
+<form method='POST'>
+Rollno: <input name="rollno"><br>
+Amount: <input name="amount"><br>
+<button type="submit" name="submit" value="1" default>Allot coupons</button>
+<button type="submit" name="submit" value="0">Redeem coupons</button>
+</form>
 </body>
 </html>
