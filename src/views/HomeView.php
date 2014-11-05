@@ -19,7 +19,10 @@ class HomeView extends View {
 			$this->current_user = SessionManager::getCurrentUser();
 			switch($this->current_user->type) {
 				case 0: return $this->render_user_home();
-				case 1: return $this->render_staff_home();
+				case 1: 
+					if ($this->current_user->approved)
+						return $this->render_staff_home();
+					else return $this->render_staff_unapproved();
 				case 2: return $this->render_admin_home();
 			}
 		}
@@ -40,7 +43,6 @@ class HomeView extends View {
 					case 1:
 						$this->current_user->allot($db, $amount);
 						break;
-					
 					default:
 						$this->data["err"] = "Invalid request";
 						break;
@@ -71,8 +73,23 @@ class HomeView extends View {
 		return $page->render(compact('data'));
 	}
 
+	private function render_staff_unapproved() {
+		$page = h2o('templates/staff/unapproved.html');
+		$data = $this->data;
+		$data["user_name"] = $this->current_user->name;
+		return $page->render(compact('data'));
+	}
+
 	private function render_admin_home() {
 		$page = h2o('templates/admin/home.html');
+		include('models/DatabaseManager.php');
+		include_once('models/User.php');
+		$unapproved_users = array();
+		$q = "SELECT * FROM user WHERE type='1' AND approved='0'";
+		$st = $db->query($q);
+		while ($r = $st->fetch_object())
+			array_push($unapproved_users, $r);
+		$this->data["unapproved_users"] = $unapproved_users;
 		$data = $this->data;
 		return $page->render(compact('data'));
 	}

@@ -35,6 +35,8 @@ class RegisterView extends View {
 	}
 
 	public function get() {
+		if (SessionManager::isLoggedin())
+			return header('Location: /');
 		$page = h2o('templates/register.html');
 		$data = array();
 		return $page->render(compact('data'));

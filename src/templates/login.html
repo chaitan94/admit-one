@@ -10,7 +10,7 @@
 	<tr><td>Email</td><td><input type="text" name="email"></td></tr>
 	<tr><td>Password</td><td><input type="password" name="password"></td></tr>
 	{% if data.error_message %}
-	<tr><td></td><td><b>{{ data.error_message }}</b></td></tr>
+	<tr><td></td><td><b>{{ data.error_message | safe }}</b></td></tr>
 	{% endif %}
 	<tr><td></td><td><input type="submit"></td></tr>
 </table>

@@ -4,6 +4,7 @@ include_once('View.php');
 /**
 * A View class for user home
 */
+define("LOGIN_FAILED", "Login failed. Wanted to <a href='/register'>register</a> intead?");
 class LoginView extends View {
 	private $urlpar;
 	private $data;
@@ -38,7 +39,7 @@ class LoginView extends View {
 		$page = h2o('templates/login.html');
 		if (isset($_GET['err'])) {
 			if ($_GET['err'] == '1'){
-				$this->data['error_message'] = "Login failed";
+				$this->data['error_message'] = LOGIN_FAILED;
 			}
 		}
 		$data = $this->data;

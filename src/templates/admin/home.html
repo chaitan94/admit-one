@@ -7,5 +7,11 @@
 Admin Home page!
 <a href="/logout"><input type="button" value="Logout!"></a>
 <h3>Staff account requests</h3>
+<table id="user">
+<tr><td>Name</td><td>E-mail</td><td></td></tr>
+{% for user in data.unapproved_users %}
+<tr><td>{{user.name}}</td><td>{{user.email}}</td><td><button data-id="{{user.id}}">Approve</button></td></tr>
+{% endfor %}
+</table>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once('models/SessionManager.php');
+include_once('util/global_functions.php');
 
 // Remove trailing slash from end of URL 
 if(substr($_SERVER['REQUEST_URI'],-1)=='/'){
@@ -14,7 +15,9 @@ if($acurl = stripos($urlpar,'?')) $urlpar = substr($urlpar,0,$acurl);
 $urlpar = explode('/',substr($urlpar,1));
 switch ($urlpar[0]) {
 	case 'ajax':
-		include_once('_php/main.php');
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+			include_once('_php/main.php');
+		else echo render_405();
 		break;
 	case 'logout':
 		SessionManager::setLoggedin(false);
@@ -35,5 +38,7 @@ switch ($urlpar[0]) {
 		$view = new RegisterView($urlpar);
 		echo $view->render();
 		break;
+	default:
+		echo render_404();
 }
 ?>
