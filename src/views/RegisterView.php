@@ -16,8 +16,8 @@ class RegisterView extends View {
 			&& isset($_POST['email']) 
 			&& isset($_POST['type']) 
 			&& isset($_POST['password'])) {
-			include_once('models/DatabaseManager.php');
-			include_once('models/User.php');
+			include('models/DatabaseManager.php');
+			include('models/User.php');
 			$u = new User();
 			$u->email = $_POST['email'];
 			if ($u->select($db)) {
