@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('models/DatabaseManager.php');
 include_once('models/SessionManager.php');
 include_once('util/global_functions.php');
 
@@ -29,11 +30,15 @@ switch ($urlpar[0]) {
 		echo $view->render();
 		break;
 	case 'login':
+		if (SessionManager::isLoggedin())
+			return header('Location: /');
 		include_once('views/LoginView.php');
 		$view = new LoginView($urlpar);
 		echo $view->render();
 		break;
 	case 'register':
+		if (SessionManager::isLoggedin())
+			return header('Location: /');
 		include_once('views/RegisterView.php');
 		$view = new RegisterView($urlpar);
 		echo $view->render();

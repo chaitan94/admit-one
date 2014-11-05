@@ -25,4 +25,10 @@ function render_404() {
 	http_response_code(404);
 	return '404';
 }
+
+function render_500() {
+	// Server error
+	http_response_code(404);
+	return '404';
+}
 ?>

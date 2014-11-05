@@ -38,10 +38,10 @@ class HomeView extends View {
 				$amount = intval($_POST["amount"]);
 				switch ($_POST["submit"]) {
 					case 0:
-						$this->current_user->redeem($db, $amount);
+						$this->current_user->redeem($db, $_POST["rollno"], $amount);
 						break;
 					case 1:
-						$this->current_user->allot($db, $amount);
+						$this->current_user->allot($db, $_POST["rollno"], $amount);
 						break;
 					default:
 						$this->data["err"] = "Invalid request";
@@ -62,6 +62,7 @@ class HomeView extends View {
 		$page = h2o('templates/user/home.html');
 		$data = $this->data;
 		$data["id"] = $this->current_user->id;
+		$data["name"] = $this->current_user->name;
 		$data["balance"] = $this->current_user->balance;
 		return $page->render(compact('data'));
 	}

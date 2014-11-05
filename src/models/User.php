@@ -38,27 +38,16 @@ class User {
 		$this->approved = $r->approved;
 		return true;
 	}
-	public function allot($db, $amount) {
-		$st = $db->prepare("UPDATE user SET balance=?;");
-		$old_balance = $this->balance;
-		$this->balance += $amount;
-		$st->bind_param('i', $this->balance);
-		if (!$st->execute()) {
-			$this->balance = $old_balance;
-			return false;
-		}
+	public function allot($db, $rollno, $amount) {
+		$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?;");
+		$st->bind_param('ii', $amount, $rollno);
+		if (!$st->execute()) return false;
 		return true;
 	}
-	public function redeem($db, $amount) {
-		$st = $db->prepare("UPDATE user SET balance=?;");
-		$old_balance = $this->balance;
-		$this->balance -= $amount;
-		if ($this->balance <= 0) return false;
-		$st->bind_param('i', $this->balance);
-		if (!$st->execute()) {
-			$this->balance = $old_balance;
-			return false;
-		}
+	public function redeem($db, $rollno, $amount) {
+		$st = $db->prepare("UPDATE user SET balance=balance-? WHERE id=?;");
+		$st->bind_param('ii', $amount, $rollno);
+		if (!$st->execute()) return false;
 		return true;
 	}
 }

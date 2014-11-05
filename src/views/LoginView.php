@@ -14,6 +14,12 @@ class LoginView extends View {
 		$this->data = array();
 	}
 
+	public function render_login_page() {
+		$page = h2o('templates/login.html');
+		$data = $this->data;
+		return $page->render(compact('data'));
+	}
+
 	public function post() {
 		if (isset($_POST['email'])
 			&& isset($_POST['password'])) {
@@ -26,24 +32,15 @@ class LoginView extends View {
 					SessionManager::setLoggedin($u->id);
 					return header('Location: /');
 				}
-				return header('Location: /login?err=1');
-			} else {
-				return header('Location: /login?err=1');
 			}
+			$this->data['error_message'] = LOGIN_FAILED;
+			$this->data['email'] = $_POST['email'];
+			return $this->render_login_page();
 		}
 	}
 
 	public function get() {
-		if (SessionManager::isLoggedin())
-			return header('Location: /');
-		$page = h2o('templates/login.html');
-		if (isset($_GET['err'])) {
-			if ($_GET['err'] == '1'){
-				$this->data['error_message'] = LOGIN_FAILED;
-			}
-		}
-		$data = $this->data;
-		return $page->render(compact('data'));
+		return $this->render_login_page();
 	}
 }
 ?>

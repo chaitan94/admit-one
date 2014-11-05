@@ -2,16 +2,50 @@
 <html>
 <head>
 	<title>User</title>
+	<link rel="stylesheet" type="text/css" href="css/pure.min.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
 </head>
 <body>
-Admin Home page!
-<a href="/logout"><input type="button" value="Logout!"></a>
-<h3>Staff account requests</h3>
-<table id="user">
-<tr><td>Name</td><td>E-mail</td><td></td></tr>
-{% for user in data.unapproved_users %}
-<tr><td>{{user.name}}</td><td>{{user.email}}</td><td><button data-id="{{user.id}}">Approve</button></td></tr>
-{% endfor %}
-</table>
+<div class="wrapper ">
+	Admin Home page!
+	<a href="/logout"><input type="button" value="Logout!"></a>
+	<h3>Staff account requests</h3>
+	<table class="pure-table" id="unapproved_users">
+		<thead><tr><th>Name</th><th>E-mail</th><th>Status</th></tr></thead>
+		<tbody>
+		{% for user in data.unapproved_users %}
+			<tr><td>{{user.name}}</td><td>{{user.email}}</td><td><button class="pure-button pure-button-primary" data-id="{{user.id}}">Approve</button></td></tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#unapproved_users button").click(function(e){
+			var btn = $(this)[0];
+			var id = $(this).data("id");
+			$.ajax({
+				url: '/ajax/approve',
+				method: 'POST',
+				data: {id: id},
+				complete: function(data) {
+					switch (data.status) {
+						case 202:
+						btn.innerHTML = 'Approved';
+						btn.style.background = 'rgb(28,184,65)';
+						btn.classList.add('pure-button-disabled');
+						break;
+						default:
+						btn.innerHTML = 'Error';
+						btn.style.background = 'rgb(202,60,60)';
+						btn.classList.add('pure-button-disabled');
+						break;
+					}
+				}
+			});
+		});
+	});
+</script>
 </body>
 </html>
