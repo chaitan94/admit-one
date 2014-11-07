@@ -66,6 +66,7 @@ class HomeView extends View {
 		$data["id"] = $this->current_user->id;
 		$data["name"] = $this->current_user->name;
 		$data["balance"] = $this->current_user->balance;
+		$data["blocked"] = $this->current_user->blocked;
 		$data["transactions"] = $this->current_user->get_transactions($db);
 		return $page->render(compact('data'));
 	}

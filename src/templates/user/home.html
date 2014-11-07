@@ -17,6 +17,9 @@
 	<div class="pure-u-3-5"><div><b>{{ data.name }}</b></div></div>
 	<div class="pure-u-1-5"><div><a href="/logout"><input class="pure-button pure-button-primary" type="button" value="Logout!"></a></div></div>
 </div>
+{% if data.blocked==1 %}
+<div style="color:#900">Your account is blocked. Please contact an admin.</div>
+{% endif %}
 <h3>Your coupons</h3>
 You have {{ data.balance }} coupons left.
 <h3>Your transactions</h3>
