@@ -2,20 +2,25 @@
 <html>
 <head>
 	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="css/pure.min.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
 </head>
 <body>
-<h2>Register</h2>
-<form method="POST">
-<table>
-	<tr><td>Name</td><td><input type="text" name="name"></td></tr>
-	<tr><td>Email</td><td><input type="text" name="email"></td></tr>
-	<tr><td>Type</td><td><select name="type">
-		<option value="0">User</option>
-		<option value="1">Staff</option>
-	</select></td></tr>
-	<tr><td>Password</td><td><input type="password" name="password"></td></tr>
-	<tr><td></td><td><input type="submit"></td></tr>
-</table>
+<div class="wrapper">
+<form method="POST" class="pure-form pure-form-aligned">
+<legend>Register</legend>
+	<div class="pure-control-group"><label>Name</label><input type="text" name="name"></div>
+	<div class="pure-control-group"><label>Email</label><input type="text" name="email"></div>
+	<div class="pure-control-group"><label>Password</label><input type="password" name="password"></div>
+	<div class="pure-control-group">
+		<label>Type</label>
+		<select class="pure-input-medium" name="type">
+			<option value="0">User</option>
+			<option value="1">Staff</option>
+		</select>
+	</div>
+	<div class="pure-controls"><input class="pure-button pure-button-primary" type="submit"></div>
 </form>
+</div>
 </body>
 </html>

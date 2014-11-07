@@ -2,18 +2,22 @@
 <html>
 <head>
 	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="css/pure.min.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
 </head>
 <body>
-<h2>Login</h2>
-<form method="POST">
+<div class="wrapper">
+<form method="POST" class="pure-form pure-form-aligned">
+<legend>Login</legend>
 <table>
-	<tr><td>Email</td><td><input type="text" name="email" value="{{ data.email }}"></td></tr>
-	<tr><td>Password</td><td><input type="password" name="password"></td></tr>
+	<div class="pure-control-group"><label>Email</label><input type="text" name="email" value="{{ data.email }}"></div>
+	<div class="pure-control-group"><label>Password</label><input type="password" name="password"></div>
 	{% if data.error_message %}
-	<tr><td></td><td><b>{{ data.error_message | safe }}</b></td></tr>
+	<div class="pure-controls"><b>{{ data.error_message | safe }}</b></div>
 	{% endif %}
-	<tr><td></td><td><input type="submit"></td></tr>
+	<div class="pure-controls"><input class="pure-button pure-button-primary" type="submit"></div>
 </table>
 </form>
+</div>
 </body>
 </html>
