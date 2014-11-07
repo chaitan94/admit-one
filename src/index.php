@@ -17,7 +17,12 @@ $urlpar = explode('/',substr($urlpar,1));
 switch ($urlpar[0]) {
 	case 'ajax':
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
-			include_once('_php/main.php');
+			include_once('_php/ajax.php');
+		else echo render_405();
+		break;
+	case 'action':
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
+			include_once('_php/action.php');
 		else echo render_405();
 		break;
 	case 'logout':

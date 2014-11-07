@@ -7,10 +7,15 @@
 </head>
 <body>
 <div class="wrapper ">
-	Admin Home page!
-	<a href="/logout"><input type="button" value="Logout!"></a>
-	<h3>Staff account requests</h3>
+	<a href="/logout"><input class="pure-button pure-button-primary" type="button" value="Logout!"></a>
+	<form id="block-form" class="pure-form" method="POST">
+		<legend>Block user</legend>
+		<input type="text" placeholder="User id" name="id">
+		<input class="pure-button pure-button-primary" type="submit" value="Block user">
+		<div id="block-msg"></div>
+	</form>
 	<table class="pure-table" id="unapproved_users">
+		<h3>Staff account requests</h3>
 		<thead><tr><th>Name</th><th>E-mail</th><th>Status</th></tr></thead>
 		<tbody>
 		{% for user in data.unapproved_users %}
@@ -44,6 +49,29 @@
 					}
 				}
 			});
+		});
+		$("#block-form").submit(function(e){
+			var btn = $("#block-msg")[0];
+			var data = $(this).serializeArray();
+			var id = $("#block-form input[name=id]")[0].value;
+			$.ajax({
+				url: '/ajax/block',
+				method: 'POST',
+				data: data,
+				complete: function(data) {
+					switch (data.status) {
+						case 202:
+						btn.innerHTML = 'Blocked user #'+id;
+						btn.style.color = 'rgb(28,184,65)';
+						break;
+						default:
+						btn.innerHTML = 'Error blocking user #'+id;
+						btn.style.color = 'rgb(202,60,60)';
+						break;
+					}
+				}
+			});
+			return false;
 		});
 	});
 </script>
