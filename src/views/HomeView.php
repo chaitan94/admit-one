@@ -59,11 +59,14 @@ class HomeView extends View {
 	}
 
 	private function render_user_home() {
+		include('models/DatabaseManager.php');
+		include_once('models/User.php');
 		$page = h2o('templates/user/home.html');
 		$data = $this->data;
 		$data["id"] = $this->current_user->id;
 		$data["name"] = $this->current_user->name;
 		$data["balance"] = $this->current_user->balance;
+		$data["transactions"] = $this->current_user->get_transactions($db);
 		return $page->render(compact('data'));
 	}
 

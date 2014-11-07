@@ -50,5 +50,13 @@ class User {
 	public function redeem($db, $rollno, $amount) {
 		return $this->allot($db, $rollno, -$amount);
 	}
+	public function get_transactions($db) {
+		$q = "SELECT * FROM transaction WHERE user='$this->id'";
+		$st = $db->query($q);
+		$results = array();
+		while ($r = $st->fetch_object())
+			array_push($results, $r);
+		return $results;
+	}
 }
 ?>

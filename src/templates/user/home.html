@@ -10,5 +10,13 @@ You are User #{{ data.id }}.
 <a href="/logout"><input type="button" value="Logout!"></a>
 <h3>Your coupons</h3>
 You have {{ data.balance }} coupons left.
+<h3>Your transactions</h3>
+{% for t in data.transactions %}
+	{% if t.value > 0 %}
+	{{ t.staff }} gave you {{ t.value }}<br>
+	{% else %}
+	{{ t.staff }} took {{ t.value }}<br>
+	{% endif %}
+{% endfor %}
 </body>
 </html>
