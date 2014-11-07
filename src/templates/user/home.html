@@ -2,21 +2,31 @@
 <html>
 <head>
 	<title>User</title>
+	<link rel="stylesheet" type="text/css" href="css/pure.min.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<style type="text/css">
+.user-head {
+	margin-top:100px;
+}
+	</style>
 </head>
 <body>
-Welcome back, <b>{{ data.name }}</b>!<br>
-You are User #{{ data.id }}.
-<br>
-<a href="/logout"><input type="button" value="Logout!"></a>
+<div class="wrapper">
+<div class="pure-g user-head">
+	<div class="pure-u-1-5"><div>User #{{ data.id }}</div></div>
+	<div class="pure-u-3-5"><div><b>{{ data.name }}</b></div></div>
+	<div class="pure-u-1-5"><div><a href="/logout"><input class="pure-button pure-button-primary" type="button" value="Logout!"></a></div></div>
+</div>
 <h3>Your coupons</h3>
 You have {{ data.balance }} coupons left.
 <h3>Your transactions</h3>
 {% for t in data.transactions %}
 	{% if t.value > 0 %}
-	{{ t.staff }} gave you {{ t.value }}<br>
+	{{ t.name }} gave you {{ t.value }} coupons.<br>
 	{% else %}
-	{{ t.staff }} took {{ t.value }}<br>
+	{{ t.name }} took {{ t.value }} coupons.<br>
 	{% endif %}
 {% endfor %}
+</div>
 </body>
 </html>

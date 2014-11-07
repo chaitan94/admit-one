@@ -2,20 +2,23 @@
 <html>
 <head>
 	<title>User</title>
+	<link rel="stylesheet" type="text/css" href="css/pure.min.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
 </head>
 <body>
-Staff Home page!
+<div class="wrapper">
+Welcome back, <b>{{data.user_name}}</b>
 <br>
-Welcome, {{data.user_name}}
-<br>
-<a href="/logout"><input type="button" value="Logout!"></a>
+<a href="/logout"><input class="pure-button pure-button-primary" type="button" value="Logout!"></a>
 <br>
 <br>
-<form method='POST'>
-Rollno: <input name="rollno"><br>
-Amount: <input name="amount"><br>
-<button type="submit" name="submit" value="1" default>Allot coupons</button>
-<button type="submit" name="submit" value="0">Redeem coupons</button>
+<form method='POST' class="pure-form pure-form-stacked">
+<label>Rollno</label><input name="rollno">
+<label>Amount</label><input name="amount">
+<label>Action</label>
+<button class="pure-button pure-button-primary" type="submit" name="submit" value="1" default>Allot coupons</button>
+<button class="pure-button pure-button-primary" type="submit" name="submit" value="0">Redeem coupons</button>
 </form>
+</div>
 </body>
 </html>

@@ -19,6 +19,9 @@
 			<option value="1">Staff</option>
 		</select>
 	</div>
+	{% if data.error_message %}
+	<div class="pure-controls"><b>{{ data.error_message | safe }}</b></div>
+	{% endif %}
 	<div class="pure-controls"><input class="pure-button pure-button-primary" type="submit"></div>
 </form>
 </div>

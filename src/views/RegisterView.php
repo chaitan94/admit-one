@@ -6,40 +6,46 @@ include_once('View.php');
 */
 class RegisterView extends View {
 	private $urlpar;
+	private $data;
 
 	public function __construct($par='') {
 		$this->urlpar = $par;
+		$this->data = array();
+	}
+
+	private function render_register_page() {
+		$page = h2o('templates/register.html');
+		$data = $this->data;
+		return $page->render(compact('data'));
 	}
 
 	public function post() {
-		if (isset($_POST['name']) 
-			&& isset($_POST['email']) 
-			&& isset($_POST['type']) 
-			&& isset($_POST['password'])) {
-			include('models/DatabaseManager.php');
-			include('models/User.php');
-			$u = new User();
-			$u->email = $_POST['email'];
-			if ($u->select($db)) {
-				die('User already exists');
+		$required = array('name', 'email', 'type', 'password');
+		foreach ($required as $key => $value)
+			if (!isset($_POST[$value]) || empty($_POST[$value])) {
+				$this->data['error_message'] = $value.' is required.';
+				return $this->render_register_page();
 			}
-			$u->name = $_POST['name'];
-			$u->email = $_POST['email'];
-			$u->type = $_POST['type'];
-			$u->hashed_pass = md5($_POST['password']);
-			if ($u->type == 2) $u->approved = false;
-			$u->insert($db);
-			SessionManager::setLoggedin($u->id);
-			header('Location: /');
+		include('models/DatabaseManager.php');
+		include('models/User.php');
+		$u = new User();
+		$u->email = $_POST['email'];
+		if ($u->select($db)) {
+			$this->data['error_message'] = 'User with that e-mail already exists';
+			return $this->render_register_page();
 		}
+		$u->name = $_POST['name'];
+		$u->email = $_POST['email'];
+		$u->type = $_POST['type'];
+		$u->hashed_pass = md5($_POST['password']);
+		if ($u->type == 2) $u->approved = false;
+		$u->insert($db);
+		SessionManager::setLoggedin($u->id);
+		return header('Location: /');
 	}
 
 	public function get() {
-		if (SessionManager::isLoggedin())
-			return header('Location: /');
-		$page = h2o('templates/register.html');
-		$data = array();
-		return $page->render(compact('data'));
+		return $this->render_register_page();
 	}
 }
 ?>

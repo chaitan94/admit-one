@@ -51,7 +51,7 @@ class User {
 		return $this->allot($db, $rollno, -$amount);
 	}
 	public function get_transactions($db) {
-		$q = "SELECT * FROM transaction WHERE user='$this->id'";
+		$q = "SELECT name, value FROM transaction LEFT JOIN user ON transaction.staff=user.id WHERE user='$this->id' ORDER BY timestamp DESC";
 		$st = $db->query($q);
 		$results = array();
 		while ($r = $st->fetch_object())
