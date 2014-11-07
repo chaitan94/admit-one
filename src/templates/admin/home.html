@@ -59,6 +59,29 @@
 				}
 			});
 		});
+		$("#blocked_users button").click(function(e){
+			var btn = $(this)[0];
+			var id = $(this).data("id");
+			$.ajax({
+				url: '/ajax/unblock',
+				method: 'POST',
+				data: {id: id},
+				complete: function(data) {
+					switch (data.status) {
+						case 202:
+						btn.innerHTML = 'Blocked';
+						btn.style.background = 'rgb(28,184,65)';
+						btn.classList.add('pure-button-disabled');
+						break;
+						default:
+						btn.innerHTML = 'Error';
+						btn.style.background = 'rgb(202,60,60)';
+						btn.classList.add('pure-button-disabled');
+						break;
+					}
+				}
+			});
+		});
 		$("#block-form").submit(function(e){
 			var btn = $("#block-msg")[0];
 			var data = $(this).serializeArray();
