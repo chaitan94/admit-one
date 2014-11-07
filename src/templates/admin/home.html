@@ -23,6 +23,15 @@
 		{% endfor %}
 		</tbody>
 	</table>
+	<table class="pure-table" id="blocked_users">
+		<h3>Blocked users</h3>
+		<thead><tr><th>Name</th><th>E-mail</th><th>Action</th></tr></thead>
+		<tbody>
+		{% for user in data.blocked_users %}
+			<tr><td>{{user.name}}</td><td>{{user.email}}</td><td><button class="pure-button pure-button-primary" data-id="{{user.id}}">Unblock</button></td></tr>
+		{% endfor %}
+		</tbody>
+	</table>
 </div>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">

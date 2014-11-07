@@ -89,12 +89,21 @@ class HomeView extends View {
 		$page = h2o('templates/admin/home.html');
 		include('models/DatabaseManager.php');
 		include_once('models/User.php');
+
 		$unapproved_users = array();
 		$q = "SELECT * FROM user WHERE type='1' AND approved='0'";
 		$st = $db->query($q);
 		while ($r = $st->fetch_object())
 			array_push($unapproved_users, $r);
 		$this->data["unapproved_users"] = $unapproved_users;
+		
+		$blocked_users = array();
+		$q = "SELECT * FROM user WHERE blocked='1'";
+		$st = $db->query($q);
+		while ($r = $st->fetch_object())
+			array_push($blocked_users, $r);
+		$this->data["blocked_users"] = $blocked_users;
+		
 		$data = $this->data;
 		return $page->render(compact('data'));
 	}
