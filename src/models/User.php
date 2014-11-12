@@ -42,13 +42,20 @@ class User {
 		$st = $db->query("SELECT blocked FROM user WHERE id='$rollno'");
 		$r = $st->fetch_object();
 		if ($r->blocked == '1') return "User blocked";
-		$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?;");
-		$st->bind_param('ii', $amount, $rollno);
-		if (!$st->execute()) return false;
-		$st = $db->prepare("INSERT INTO transaction(user, staff, value) VALUES (?, ?, ?);");
-		$st->bind_param('iii', $rollno, $this->id, $amount);
-		if (!$st->execute()) return false;
-		return true;
+		try {
+			$db->autocommit(false);
+			$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?;");
+			$st->bind_param('ii', $amount, $rollno);
+			$st->execute();
+			$st = $db->prepare("INSERT INTO transaction(user, staff, value) VALUES (?, ?, ?);");
+			$st->bind_param('iii', $rollno, $this->id, $amount);
+			$st->execute();
+			$db->autocommit(true);
+			return true;
+		} catch (Exception $e) {
+			$db->rollback();
+			return false;
+		}
 	}
 	public function redeem($db, $rollno, $amount) {
 		return $this->allot($db, $rollno, -$amount);

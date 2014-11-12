@@ -22,13 +22,20 @@ function unblock($db, $id) {
 }
 
 function transfer($db, $from, $to, $amount) {
-	$st = $db->prepare("UPDATE user SET balance=balance-? WHERE id=?");
-	$st->bind_param('ii', $amount, $from);
-	if (!$st->execute()) return render_500();
-	$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?");
-	$st->bind_param('ii', $amount, $to);
-	if (!$st->execute()) return render_500();
-	return render_202();
+	try {
+		$db->autocommit(false);
+		$st = $db->prepare("UPDATE user SET balance=balance-? WHERE id=?");
+		$st->bind_param('ii', $amount, $from);
+		$st->execute();
+		$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?");
+		$st->bind_param('ii', $amount, $to);
+		$st->execute();
+		$db->autocommit(true);
+		return render_202();
+	} catch (Exception $e) {
+		$db->rollback();
+		return render_500();
+	}
 }
 
 if (!isset($urlpar[1]) || strlen($urlpar[1]) == 0)
