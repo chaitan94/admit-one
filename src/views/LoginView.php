@@ -4,7 +4,7 @@ include_once('View.php');
 /**
 * A View class for user home
 */
-define("LOGIN_FAILED", "Login failed. Wanted to <a href='/register'>register</a> intead?");
+define("LOGIN_FAILED", "Login failed. Wanted to <a href='/register'>register</a> instead?");
 class LoginView extends View {
 	private $urlpar;
 	private $data;
