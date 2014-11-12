@@ -30,6 +30,9 @@ function transfer($db, $from, $to, $amount) {
 		$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?");
 		$st->bind_param('ii', $amount, $to);
 		$st->execute();
+		$st = $db->prepare("INSERT INTO transaction(user, staff, value) VALUES (?, ?, ?);");
+		$st->bind_param('iii', $to, $from, $amount);
+		$st->execute();
 		$db->autocommit(true);
 		return render_202();
 	} catch (Exception $e) {
