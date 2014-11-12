@@ -22,6 +22,15 @@
 {% endif %}
 <h3>Your coupons</h3>
 You have {{ data.balance }} coupons left.
+
+<h3>Transfer coupons</h3>
+<form id="transfer_form"class="pure-form pure-form-stacked">
+	<label>Rollno</label><input name="id">
+	<label>Amount</label><input name="amount">
+	<br><input class="pure-button pure-button-primary" type="submit" value="Transfer">
+	<br><div id="transfer_msg" style="color:red;"></div>
+</form>
+
 <h3>Your transactions</h3>
 {% for t in data.transactions %}
 	{% if t.value > 0 %}
@@ -31,5 +40,31 @@ You have {{ data.balance }} coupons left.
 	{% endif %}
 {% endfor %}
 </div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#transfer_form").submit(function(e){
+			var msg = $("#transfer_msg")[0];
+			$.ajax({
+				url: '/ajax/transfer',
+				method: 'POST',
+				data: $(this).serializeArray(),
+				complete: function(data) {
+					switch (data.status) {
+						case 202:
+						msg.innerHTML = 'Transferred';
+						msg.style.color = 'rgb(28,184,65)';
+						break;
+						default:
+						msg.innerHTML = 'Error';
+						msg.style.color = 'rgb(202,60,60)';
+						break;
+					}
+				}
+			});
+			return false;
+		});
+	});
+</script>
 </body>
 </html>

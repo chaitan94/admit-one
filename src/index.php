@@ -5,7 +5,7 @@ include_once('models/SessionManager.php');
 include_once('util/global_functions.php');
 
 // Remove trailing slash from end of URL 
-if(substr($_SERVER['REQUEST_URI'],-1)=='/'){
+if($_SERVER['REQUEST_URI'] != '/' && substr($_SERVER['REQUEST_URI'],-1)=='/'){
 	header('Location: '.substr($_SERVER['REQUEST_URI'],0,-1));
 }
 // To store parameters from URL
@@ -30,6 +30,7 @@ switch ($urlpar[0]) {
 		header('Location: /');
 		break;
 	case '':
+	case '/':
 		include_once('views/HomeView.php');
 		$view = new HomeView($urlpar);
 		echo $view->render();

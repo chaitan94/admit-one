@@ -21,6 +21,16 @@ function unblock($db, $id) {
 	return render_202();
 }
 
+function transfer($db, $from, $to, $amount) {
+	$st = $db->prepare("UPDATE user SET balance=balance-? WHERE id=?");
+	$st->bind_param('ii', $amount, $from);
+	if (!$st->execute()) return render_500();
+	$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?");
+	$st->bind_param('ii', $amount, $to);
+	if (!$st->execute()) return render_500();
+	return render_202();
+}
+
 if (!isset($urlpar[1]) || strlen($urlpar[1]) == 0)
 	echo render_400();
 else {
@@ -45,6 +55,20 @@ else {
 			$current_user = SessionManager::getCurrentUser();
 			if ($current_user->type != 2) return render_401();
 			echo unblock($db, $_POST["id"]);
+			break;
+		case 'transfer':
+			if (!isset($_POST["id"])) return render_400();
+			if (!is_numeric($_POST["id"])) return render_400();
+			if (!isset($_POST["amount"])) return render_400();
+			if (!is_numeric($_POST["amount"])) return render_400();
+			$amount = intval($_POST["amount"]);
+			// You can only give coupons not take them
+			if ($amount < 0) return render_400();
+			if (!SessionManager::isLoggedin()) return render_401();
+			$current_user = SessionManager::getCurrentUser();
+			// Only users can transfer
+			if ($current_user->type != 0) return render_401();
+			echo transfer($db, $current_user->id, intval($_POST["id"]), $amount);
 			break;
 		default:
 			echo render_400();
