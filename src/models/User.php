@@ -39,6 +39,9 @@ class User {
 		return true;
 	}
 	public function allot($db, $rollno, $amount) {
+		$st = $db->query("SELECT blocked FROM user WHERE id='$rollno'");
+		$r = $st->fetch_object();
+		if ($r->blocked == '1') return "User blocked";
 		$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?;");
 		$st->bind_param('ii', $amount, $rollno);
 		if (!$st->execute()) return false;

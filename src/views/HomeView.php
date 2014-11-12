@@ -38,10 +38,10 @@ class HomeView extends View {
 				$amount = intval($_POST["amount"]);
 				switch ($_POST["submit"]) {
 					case 0:
-						$this->current_user->redeem($db, $_POST["rollno"], $amount);
+						$this->data["err"] = $this->current_user->redeem($db, $_POST["rollno"], $amount);
 						break;
 					case 1:
-						$this->current_user->allot($db, $_POST["rollno"], $amount);
+						$this->data["err"] = $this->current_user->allot($db, $_POST["rollno"], $amount);
 						break;
 					default:
 						$this->data["err"] = "Invalid request";
