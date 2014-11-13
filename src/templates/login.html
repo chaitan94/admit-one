@@ -9,14 +9,12 @@
 <div class="wrapper">
 <form method="POST" class="pure-form pure-form-aligned">
 <legend>Login</legend>
-<table>
-	<div class="pure-control-group"><label>Email</label><input type="text" name="email" value="{{ data.email }}"></div>
-	<div class="pure-control-group"><label>Password</label><input type="password" name="password"></div>
+	<div class="pure-control-group"><label>Email</label><input type="text" name="email" value="{{ data.email }}" required></div>
+	<div class="pure-control-group"><label>Password</label><input type="password" name="password" required></div>
 	{% if data.error_message %}
 	<div class="pure-controls"><b>{{ data.error_message | safe }}</b></div>
 	{% endif %}
 	<div class="pure-controls"><input class="pure-button pure-button-primary" type="submit"></div>
-</table>
 </form>
 </div>
 </body>

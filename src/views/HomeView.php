@@ -74,7 +74,8 @@ class HomeView extends View {
 	private function render_staff_home() {
 		$page = h2o('templates/staff/home.html');
 		$data = $this->data;
-		$data["user_name"] = $this->current_user->name;
+		$data["id"] = $this->current_user->id;
+		$data["name"] = $this->current_user->name;
 		return $page->render(compact('data'));
 	}
 

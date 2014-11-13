@@ -9,12 +9,12 @@
 <div class="wrapper">
 <form method="POST" class="pure-form pure-form-aligned">
 <legend>Register</legend>
-	<div class="pure-control-group"><label>Name</label><input type="text" name="name"></div>
-	<div class="pure-control-group"><label>Email</label><input type="text" name="email"></div>
-	<div class="pure-control-group"><label>Password</label><input type="password" name="password"></div>
+	<div class="pure-control-group"><label>Name</label><input type="text" name="name" required></div>
+	<div class="pure-control-group"><label>Email</label><input type="text" name="email" required></div>
+	<div class="pure-control-group"><label>Password</label><input type="password" name="password" required></div>
 	<div class="pure-control-group">
 		<label>Type</label>
-		<select class="pure-input-medium" name="type">
+		<select class="pure-input-medium" name="type" required>
 			<option value="0">User</option>
 			<option value="1">Staff</option>
 		</select>

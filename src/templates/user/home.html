@@ -4,15 +4,10 @@
 	<title>User</title>
 	<link rel="stylesheet" type="text/css" href="css/pure.min.css">
 	<link rel="stylesheet" type="text/css" href="css/base.css">
-	<style type="text/css">
-.user-head {
-	margin-top:100px;
-}
-	</style>
 </head>
 <body>
 <div class="wrapper">
-<div class="pure-g user-head">
+<div class="pure-g" style="margin-top:100px;">
 	<div class="pure-u-1-5"><div>User #{{ data.id }}</div></div>
 	<div class="pure-u-3-5"><div><b>{{ data.name }}</b></div></div>
 	<div class="pure-u-1-5"><div><a href="/logout"><input class="pure-button pure-button-primary" type="button" value="Logout!"></a></div></div>
@@ -20,40 +15,51 @@
 {% if data.blocked==1 %}
 <div style="color:#900">Your account is blocked. Please contact an admin.</div>
 {% endif %}
-<h3>Your coupons</h3>
-You have {{ data.balance }} coupons left.
 
-<h3>Transfer coupons</h3>
-<form id="transfer_form"class="pure-form pure-form-stacked">
-	<label>Rollno</label><input name="id">
-	<label>Amount</label><input name="amount">
-	<br><input class="pure-button pure-button-primary" type="submit" value="Transfer">
-	<br><div id="transfer_msg" style="color:red;"></div>
-</form>
+<div class="pure-g" style="margin-top:50px;">
+	<div class="pure-u-1-2">
+		<h3>Your coupons</h3>
+		You have <span id="coupons">{{ data.balance }}</span> coupons left.
+		<h3>Your transactions</h3>
+		{% for t in data.transactions %}
+			{% if t.value > 0 %}
+			{{ t.name }} gave you {{ t.value }} coupons.<br>
+			{% else %}
+			{{ t.name }} took {{ t.value }} coupons.<br>
+			{% endif %}
+		{% endfor %}
+	</div>
 
-<h3>Your transactions</h3>
-{% for t in data.transactions %}
-	{% if t.value > 0 %}
-	{{ t.name }} gave you {{ t.value }} coupons.<br>
-	{% else %}
-	{{ t.name }} took {{ t.value }} coupons.<br>
-	{% endif %}
-{% endfor %}
+	<div class="pure-u-1-2">
+		<form id="transfer_form" class="pure-form pure-form-stacked">
+		<fieldset>
+			<legend>Transfer coupons</legend>
+			<input placeholder="Rollno" type="number" name="id" required>
+			<input placeholder="Amount" type="number" name="amount" required>
+			<br><input class="pure-button pure-button-primary" type="submit" value="Transfer">
+			<br><div id="transfer_msg" style="color:red;"></div>
+		</fieldset>
+		</form>
+	</div>
+</div>
 </div>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#transfer_form").submit(function(e){
 			var msg = $("#transfer_msg")[0];
+			var data = $(this).serializeArray();
 			$.ajax({
 				url: '/ajax/transfer',
 				method: 'POST',
-				data: $(this).serializeArray(),
+				data: data,
 				complete: function(data) {
 					switch (data.status) {
 						case 202:
 						msg.innerHTML = 'Transferred';
 						msg.style.color = 'rgb(28,184,65)';
+						var coupons = $("#coupons")[0];
+						coupons.innerHTML = parseInt(coupons.innerHTML) - parseInt($("#transfer_form input[name=amount]")[0].value);
 						break;
 						default:
 						msg.innerHTML = 'Error';
