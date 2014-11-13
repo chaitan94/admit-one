@@ -20,6 +20,45 @@
 	<button class="pure-button pure-button-primary" type="submit" name="submit" value="0">Redeem coupons</button>
 	<br><span style="color:red;">{{ data.err }}</span>
 </form>
+<form id="change_pass_form" class="pure-form pure-form-stacked">
+<fieldset>
+	<legend>Change Password</legend>
+	<input placeholder="Old Password" type="password" name="old_password" required>
+	<input placeholder="New Password" type="password" name="new_password" required>
+	<input placeholder="Confirm Password" type="password" name="confirm_password" required>
+	<br><input class="pure-button pure-button-primary" type="submit">
+	<br><div id="change_pass_msg" style="color:red;"></div>
+</fieldset>
+</form>
 </div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#change_pass_form").submit(function(e){
+			var msg = $("#change_pass_msg")[0];
+			var data = $(this).serializeArray();
+			$.ajax({
+				url: '/ajax/change_password',
+				method: 'POST',
+				data: data,
+				complete: function(data) {
+					switch (data.status) {
+						case 202:
+						msg.innerHTML = 'Password Changed Successfully';
+						msg.style.color = 'rgb(28,184,65)';
+						break;
+						default:
+						console.log(data);
+						console.log(data.responseText);
+						msg.innerHTML = data.responseText;
+						msg.style.color = 'rgb(202,60,60)';
+						break;
+					}
+				}
+			});
+			return false;
+		});
+	});
+</script>
 </body>
 </html>
