@@ -42,6 +42,15 @@ class User {
 		$st = $db->query("SELECT blocked FROM user WHERE id='$rollno'");
 		$r = $st->fetch_object();
 		if ($r->blocked == '1') return "User blocked";
+		$st = $db->query("SELECT balance FROM user WHERE id='".$rollno."'");
+		$r = $st->fetch_object();
+		if ($amount >= 0) {
+			// Alloting
+			if ($r->balance + $amount > MAX_COUPONS) return "User cannot have no more than ".(MAX_COUPONS - $r->balance)." additional coupons.";
+		} else {
+			// Redeem
+			if ($r->balance + $amount < 0) return "User only has ".$r->balance." coupons left.";
+		}
 		try {
 			$db->autocommit(false);
 			$st = $db->prepare("UPDATE user SET balance=balance+? WHERE id=?;");
@@ -51,10 +60,10 @@ class User {
 			$st->bind_param('iii', $rollno, $this->id, $amount);
 			$st->execute();
 			$db->autocommit(true);
-			return true;
+			return "Transferred successfully";
 		} catch (Exception $e) {
 			$db->rollback();
-			return false;
+			return "Server Error";
 		}
 	}
 	public function redeem($db, $rollno, $amount) {
