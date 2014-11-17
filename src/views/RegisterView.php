@@ -22,7 +22,7 @@ class RegisterView extends View {
 	public function post() {
 		$required = array('name', 'email', 'type', 'password');
 		foreach ($required as $key => $value)
-			if (!isset($_POST[$value]) || empty($_POST[$value])) {
+			if (!isset($_POST[$value]) || strlen($_POST[$value])!=0) {
 				$this->data['error_message'] = $value.' is required.';
 				return $this->render_register_page();
 			}
