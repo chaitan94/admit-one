@@ -72,7 +72,7 @@
 						coupons.innerHTML = parseInt(coupons.innerHTML) - parseInt($("#transfer_form input[name=amount]")[0].value);
 						break;
 						default:
-						msg.innerHTML = 'Error';
+						msg.innerHTML = data.responseText;
 						msg.style.color = 'rgb(202,60,60)';
 						break;
 					}

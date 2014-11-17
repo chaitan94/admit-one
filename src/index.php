@@ -1,5 +1,7 @@
 <?php
 session_start();
+define("MAX_COUPONS", 160);
+
 include_once('models/DatabaseManager.php');
 include_once('models/SessionManager.php');
 include_once('util/global_functions.php');

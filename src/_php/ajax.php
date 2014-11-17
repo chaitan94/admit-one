@@ -22,6 +22,12 @@ function unblock($db, $id) {
 }
 
 function transfer($db, $from, $to, $amount) {
+	$st = $db->query("SELECT balance FROM user WHERE id='$from'");
+	$r = $st->fetch_object();
+	if ($r->balance - $amount < 0) return render_400("Not enough Balance");
+	$st = $db->query("SELECT balance FROM user WHERE id='$to'");
+	$r = $st->fetch_object();
+	if ($r->balance + $amount > MAX_COUPONS) return render_400("Other user cannot have that many coupons.");
 	try {
 		$db->autocommit(false);
 		$st = $db->prepare("UPDATE user SET balance=balance-? WHERE id=?");
